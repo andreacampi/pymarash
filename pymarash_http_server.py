@@ -27,7 +27,7 @@ armcmds["gripopen"] = [1,0,0]
 armcmds["gripclose"] = [2,0,0]
 
 # Let's find the arm (the ID is fixed)
-RoboArm = usb.core.find(idVendor=0x1267, idProduct=0x000)
+RoboArm = usb.core.find(idVendor=0x1267)
 
 
 #Check if the arm is detected and stop here if not
