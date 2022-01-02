@@ -7,9 +7,7 @@ Inspired by the code available at https://github.com/MrYsLab/s2a_fm
 
 import logging
 import usb.core, usb.util, time
-from BaseHTTPServer import BaseHTTPRequestHandler
-from BaseHTTPServer import HTTPServer
-from string import split
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # Port for the HTTP server (it should match what is declared in the .json file)
 port = 14275
@@ -47,7 +45,7 @@ class GetHandler(BaseHTTPRequestHandler):
 
         # split the URL using the separator character "/"
         # (see Scratch documentation for off-line extensions)
-        cmd_list = split(arguments, '/')
+        cmd_list = str.split(arguments, '/')
 
         s = 'okay'
         # If the command is to turn the light on or off we send directly the instruction
@@ -72,7 +70,7 @@ class GetHandler(BaseHTTPRequestHandler):
 
         # If the command is not one of the above, then print an error and return.
         else:
-            print "Some error with this command!"+cmd_list[0]
+            print("Some error with this command!"+cmd_list[0])
             return
 
         # If we reach this point, everything should be OK and we send an 'okay' message back
@@ -108,18 +106,18 @@ def start_server():
 
     try:
         server = HTTPServer(('localhost', port), GetHandler)
-        print 'Starting py-marash HTTP Server!'
-        print 'Use <Ctrl-C> to exit the extension\n'
-        print 'You can now start Scratch and import the extension'
+        print('Starting py-marash HTTP Server!')
+        print('Use <Ctrl-C> to exit the extension\n')
+        print('You can now start Scratch and import the extension')
     except Exception:
         logging.debug('Something wrong here')
-        print 'HTTP Socket may already be in use or Arm is not connected - restart Scratch'
+        print('HTTP Socket may already be in use or Arm is not connected - restart Scratch')
         raise
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         logging.info('py-marash HTTP server: keyboard interrupt exception')
-        print "Goodbye !"
+        print("Goodbye !")
         raise KeyboardInterrupt
     except Exception:
         logging.debug('py-marash: Exception %s' % str(Exception))
